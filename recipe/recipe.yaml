@@ -1,0 +1,48 @@
+schema_version: 1
+
+context:
+  name: mcrpy
+  version: "0.2.0"
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/mcrpy-${{ version }}.tar.gz
+  sha256: 6c1af3edee88f391fa47d5bd10a17715e5d1dafb279388e9c16e9fe930addf93
+
+build:
+  number: 1
+  noarch: python
+  script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+
+requirements:
+  host:
+    - python ${{ python_min }}.*
+    - pip
+    - setuptools
+  run:
+    - python >=${{ python_min }}
+    - numpy >=1.20.1
+    - tensorflow >=2.7.1
+    - matplotlib-base >=3.3.4
+    - scipy >=1.6.2
+    - pyevtk
+
+tests:
+  - python:
+      imports:
+        - mcrpy
+      pip_check: true
+      python_version: ${{ python_min }}
+
+about:
+  summary: Microstructure characterization and reconstruction in Python
+  license: Apache-2.0
+  license_file: LICENSE
+  homepage: https://github.com/NEFM-TUDresden/MCRpy
+
+extra:
+  recipe-maintainers:
+    - jan-janssen
